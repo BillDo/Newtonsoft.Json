@@ -43,7 +43,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Newtonsoft.Json.Utilities
 {
-#if (NETFX_CORE || PORTABLE || PORTABLE40)
+#if (NETFX_CORE || PORTABLE || PORTABLE40 || ASPNETCORE50)
     internal enum MemberTypes
     {
         Property,
@@ -667,7 +667,7 @@ namespace Newtonsoft.Json.Utilities
             return (attributes != null) ? attributes.SingleOrDefault() : null;
         }
 
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
         public static T[] GetAttributes<T>(object attributeProvider, bool inherit) where T : Attribute
         {
             return (T[])GetAttributes(attributeProvider, typeof(T), inherit);
@@ -796,7 +796,7 @@ namespace Newtonsoft.Json.Utilities
             ValidationUtils.ArgumentNotNull(targetType, "targetType");
 
             List<MemberInfo> fieldInfos = new List<MemberInfo>(targetType.GetFields(bindingAttr));
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             // Type.GetFields doesn't return inherited private fields
             // manually find private fields from base class
             GetChildPrivateFields(fieldInfos, targetType, bindingAttr);

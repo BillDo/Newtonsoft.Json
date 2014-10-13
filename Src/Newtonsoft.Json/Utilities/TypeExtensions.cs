@@ -67,20 +67,20 @@ namespace Newtonsoft.Json.Utilities
             return null;
         }
 
-        public static bool IsSubclassOf(this Type type, Type c)
-        {
-            return type.GetTypeInfo().IsSubclassOf(c);
-        }
-
         public static bool IsAssignableFrom(this Type type, Type c)
         {
             return type.GetTypeInfo().IsAssignableFrom(c.GetTypeInfo());
         }
 #endif
 
+        public static bool IsSubclassOf(this Type type, Type c)
+        {
+            return type.GetTypeInfo().IsSubclassOf(c);
+        }
+
         public static MethodInfo Method(this Delegate d)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return d.Method;
 #else
             return d.GetMethodInfo();
@@ -89,7 +89,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static MemberTypes MemberType(this MemberInfo memberInfo)
         {
-#if !(NETFX_CORE || PORTABLE || PORTABLE40)
+#if !(NETFX_CORE || PORTABLE || PORTABLE40 || ASPNETCORE50)
             return memberInfo.MemberType;
 #else
             if (memberInfo is PropertyInfo)
@@ -107,7 +107,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool ContainsGenericParameters(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.ContainsGenericParameters;
 #else
             return type.GetTypeInfo().ContainsGenericParameters;
@@ -116,7 +116,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsInterface(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.IsInterface;
 #else
             return type.GetTypeInfo().IsInterface;
@@ -125,7 +125,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsGenericType(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.IsGenericType;
 #else
             return type.GetTypeInfo().IsGenericType;
@@ -134,7 +134,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsGenericTypeDefinition(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.IsGenericTypeDefinition;
 #else
             return type.GetTypeInfo().IsGenericTypeDefinition;
@@ -143,7 +143,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static Type BaseType(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.BaseType;
 #else
             return type.GetTypeInfo().BaseType;
@@ -152,7 +152,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static Assembly Assembly(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.Assembly;
 #else
             return type.GetTypeInfo().Assembly;
@@ -161,7 +161,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsEnum(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.IsEnum;
 #else
             return type.GetTypeInfo().IsEnum;
@@ -170,7 +170,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsClass(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.IsClass;
 #else
             return type.GetTypeInfo().IsClass;
@@ -179,14 +179,14 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsSealed(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.IsSealed;
 #else
             return type.GetTypeInfo().IsSealed;
 #endif
         }
 
-#if PORTABLE40
+#if PORTABLE40 || ASPNETCORE50
         public static PropertyInfo GetProperty(this Type type, string name, BindingFlags bindingFlags, object placeholder1, Type propertyType, IList<Type> indexParameters, object placeholder2)
         {
             IList<PropertyInfo> propertyInfos = type.GetProperties(bindingFlags);
@@ -221,19 +221,20 @@ namespace Newtonsoft.Json.Utilities
         }
 #endif
 
-#if (NETFX_CORE || PORTABLE)
+#if (NETFX_CORE || PORTABLE || ASPNETCORE50)
         public static MethodInfo GetBaseDefinition(this MethodInfo method)
         {
             return method.GetRuntimeBaseDefinition();
         }
 #endif
 
-#if (NETFX_CORE || PORTABLE)
+#if (NETFX_CORE || PORTABLE || ASPNETCORE50)
         public static bool IsDefined(this Type type, Type attributeType, bool inherit)
         {
             return type.GetTypeInfo().CustomAttributes.Any(a => a.AttributeType == attributeType);
         }
 
+#if !ASPNETCORE50
         public static MethodInfo GetMethod(this Type type, string name)
         {
             return type.GetMethod(name, DefaultFlags);
@@ -443,6 +444,7 @@ namespace Newtonsoft.Json.Utilities
 
             return fields.Where(f => TestAccessibility(f, bindingFlags)).ToList();
         }
+#endif
 
         private static bool TestAccessibility(PropertyInfo member, BindingFlags bindingFlags)
         {
@@ -495,6 +497,7 @@ namespace Newtonsoft.Json.Utilities
             return visibility && instance;
         }
 
+#if !ASPNETCORE50
         public static Type[] GetGenericArguments(this Type type)
         {
             return type.GetTypeInfo().GenericTypeArguments;
@@ -513,7 +516,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsAbstract(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.IsAbstract;
 #else
             return type.GetTypeInfo().IsAbstract;
@@ -522,7 +525,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsVisible(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.IsVisible;
 #else
             return type.GetTypeInfo().IsVisible;
@@ -531,7 +534,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsValueType(this Type type)
         {
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
             return type.IsValueType;
 #else
             return type.GetTypeInfo().IsValueType;
@@ -571,5 +574,6 @@ namespace Newtonsoft.Json.Utilities
             Type match;
             return type.AssignableToTypeName(fullTypeName, out match);
         }
+#endif
     }
 }

@@ -170,7 +170,7 @@ namespace Newtonsoft.Json.Utilities
                 if (i > 0 && hasNext && !char.IsUpper(chars[i + 1]))
                     break;
 
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
                 chars[i] = char.ToLower(chars[i], CultureInfo.InvariantCulture);
 #else
                 chars[i] = char.ToLowerInvariant(chars[i]);
@@ -182,7 +182,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsHighSurrogate(char c)
         {
-#if !(PORTABLE40 || PORTABLE)
+#if !(PORTABLE40 || PORTABLE || ASPNETCORE50)
             return char.IsHighSurrogate(c);
 #else
             return (c >= 55296 && c <= 56319);
@@ -191,7 +191,7 @@ namespace Newtonsoft.Json.Utilities
 
         public static bool IsLowSurrogate(char c)
         {
-#if !(PORTABLE40 || PORTABLE)
+#if !(PORTABLE40 || PORTABLE || ASPNETCORE50)
             return char.IsLowSurrogate(c);
 #else
             return (c >= 56320 && c <= 57343);

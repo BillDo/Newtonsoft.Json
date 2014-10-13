@@ -28,7 +28,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using System.Security;
-#if !(NETFX_CORE || PORTABLE || PORTABLE40)
+#if !(NETFX_CORE || PORTABLE || PORTABLE40 || ASPNETCORE50)
 using System.Security.Permissions;
 #endif
 using Newtonsoft.Json.Utilities;
@@ -58,7 +58,7 @@ namespace Newtonsoft.Json.Serialization
         private static readonly ThreadSafeStore<Type, Func<object[], JsonConverter>> JsonConverterCreatorCache = 
             new ThreadSafeStore<Type, Func<object[], JsonConverter>>(GetJsonConverterCreator);
 
-#if !(NET20 || NETFX_CORE)
+#if !(NET20 || NETFX_CORE || ASPNETCORE50)
         private static readonly ThreadSafeStore<Type, Type> AssociatedMetadataTypesCache = new ThreadSafeStore<Type, Type>(GetAssociateMetadataTypeFromAttribute);
 
         private const string MetadataTypeAttributeTypeName =
@@ -134,7 +134,7 @@ namespace Newtonsoft.Json.Serialization
                 return MemberSerialization.OptIn;
 #endif
 
-#if !(NETFX_CORE || PORTABLE40 || PORTABLE)
+#if !(NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50)
             if (!ignoreSerializableAttribute)
             {
                 SerializableAttribute serializableAttribute = GetCachedAttribute<SerializableAttribute>(objectType);
@@ -217,14 +217,14 @@ namespace Newtonsoft.Json.Serialization
             };
         }
 
-#if !(NETFX_CORE || PORTABLE40 || PORTABLE)
+#if !(NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50)
         public static TypeConverter GetTypeConverter(Type type)
         {
             return TypeDescriptor.GetConverter(type);
         }
 #endif
 
-#if !(NET20 || NETFX_CORE)
+#if !(NET20 || NETFX_CORE || ASPNETCORE50)
         private static Type GetAssociatedMetadataType(Type type)
         {
             return AssociatedMetadataTypesCache.Get(type);
@@ -272,7 +272,7 @@ namespace Newtonsoft.Json.Serialization
         {
             T attribute;
 
-#if !(NET20 || NETFX_CORE)
+#if !(NET20 || NETFX_CORE || ASPNETCORE50)
             Type metadataType = GetAssociatedMetadataType(type);
             if (metadataType != null)
             {
@@ -300,7 +300,7 @@ namespace Newtonsoft.Json.Serialization
         {
             T attribute;
 
-#if !(NET20 || NETFX_CORE)
+#if !(NET20 || NETFX_CORE || ASPNETCORE50)
             Type metadataType = GetAssociatedMetadataType(memberInfo.DeclaringType);
             if (metadataType != null)
             {
@@ -364,14 +364,14 @@ namespace Newtonsoft.Json.Serialization
 
         public static bool DynamicCodeGeneration
         {
-#if !(NET20 || NET35 || NETFX_CORE || PORTABLE)
+#if !(NET20 || NET35 || NETFX_CORE || PORTABLE || ASPNETCORE50)
             [SecuritySafeCritical]
 #endif
                 get
             {
                 if (_dynamicCodeGeneration == null)
                 {
-#if !(NETFX_CORE || PORTABLE40 || PORTABLE)
+#if !(NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50)
                     try
                     {
                         new ReflectionPermission(ReflectionPermissionFlag.MemberAccess).Demand();
@@ -400,9 +400,9 @@ namespace Newtonsoft.Json.Serialization
             {
                 if (_fullyTrusted == null)
                 {
-#if (NETFX_CORE || PORTABLE || PORTABLE40)
+#if (NETFX_CORE || PORTABLE || PORTABLE40 || ASPNETCORE50)
                     _fullyTrusted = false;
-#elif !(NET20 || NET35 || PORTABLE40)
+#elif !(NET20 || NET35 || PORTABLE40 || ASPNETCORE50)
                     AppDomain appDomain = AppDomain.CurrentDomain;
 
                     _fullyTrusted = appDomain.IsHomogenous && appDomain.IsFullyTrusted;
@@ -427,7 +427,7 @@ namespace Newtonsoft.Json.Serialization
         {
             get
             {
-#if !(PORTABLE40 || PORTABLE || NETFX_CORE)
+#if !(PORTABLE40 || PORTABLE || NETFX_CORE || ASPNETCORE50)
                 if (DynamicCodeGeneration)
                     return DynamicReflectionDelegateFactory.Instance;
 

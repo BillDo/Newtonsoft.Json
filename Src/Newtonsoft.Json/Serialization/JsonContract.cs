@@ -41,10 +41,10 @@ namespace Newtonsoft.Json.Serialization
         Primitive,
         String,
         Dictionary,
-#if !(NET35 || NET20 || PORTABLE40)
+#if !(NET35 || NET20 || PORTABLE40 || ASPNETCORE50)
         Dynamic,
 #endif
-#if !(NETFX_CORE || PORTABLE || PORTABLE40)
+#if !(NETFX_CORE || PORTABLE || PORTABLE40 || ASPNETCORE50)
         Serializable,
 #endif
         Linq

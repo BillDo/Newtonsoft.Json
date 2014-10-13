@@ -493,7 +493,7 @@ namespace Newtonsoft.Json
                         WriteComment((reader.Value != null) ? reader.Value.ToString() : null);
                         break;
                     case JsonToken.Integer:
-#if !(NET20 || NET35 || PORTABLE || PORTABLE40)
+#if !(NET20 || NET35 || PORTABLE || PORTABLE40 || ASPNETCORE50)
                         if (reader.Value is BigInteger)
                         {
                             WriteValue((BigInteger)reader.Value);
@@ -1222,7 +1222,7 @@ namespace Newtonsoft.Json
             }
             else
             {
-#if !(NET20 || NET35 || PORTABLE || PORTABLE40)
+#if !(NET20 || NET35 || PORTABLE || PORTABLE40 || ASPNETCORE50)
                 // this is here because adding a WriteValue(BigInteger) to JsonWriter will
                 // mean the user has to add a reference to System.Numerics.dll
                 if (value is BigInteger)
@@ -1390,13 +1390,13 @@ namespace Newtonsoft.Json
                 case PrimitiveTypeCode.Bytes:
                     writer.WriteValue((byte[])value);
                     break;
-#if !(PORTABLE || NETFX_CORE)
+#if !(PORTABLE || NETFX_CORE || ASPNETCORE50)
                 case PrimitiveTypeCode.DBNull:
                     writer.WriteNull();
                     break;
 #endif
                 default:
-#if !(PORTABLE || NETFX_CORE)
+#if !(PORTABLE || NETFX_CORE || ASPNETCORE50)
                     if (value is IConvertible)
                     {
                         // the value is a non-standard IConvertible

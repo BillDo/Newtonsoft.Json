@@ -1,5 +1,5 @@
 ﻿
-#if PocketPC || NETFX_CORE || PORTABLE40 || PORTABLE
+#if PocketPC || NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50
 using System;
 using System.Reflection;
 

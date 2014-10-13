@@ -38,6 +38,8 @@ using System.Security;
 [assembly: AssemblyTitle("Json.NET Portable")]
 #elif NETFX_CORE
 [assembly: AssemblyTitle("Json.NET WinRT")]
+#elif ASPNETCORE50
+[assembly: AssemblyTitle("Json.NET ASP.NET Core 5.0")]
 #elif NET20
 [assembly: AssemblyTitle("Json.NET .NET 2.0")]
 [assembly: AllowPartiallyTrustedCallers]
@@ -52,7 +54,7 @@ using System.Security;
 [assembly: AllowPartiallyTrustedCallers]
 #endif
 
-#if !SIGNED
+#if !SIGNED || ASPNETCORE50
 
 [assembly: InternalsVisibleTo("Newtonsoft.Json.Tests")]
 #else
@@ -68,7 +70,7 @@ using System.Security;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-#if !(PORTABLE40 || PORTABLE)
+#if !(PORTABLE40 || PORTABLE || ASPNETCORE50)
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM componenets.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.

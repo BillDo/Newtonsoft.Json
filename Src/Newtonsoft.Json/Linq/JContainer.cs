@@ -46,17 +46,17 @@ namespace Newtonsoft.Json.Linq
     /// Represents a token that can contain other tokens.
     /// </summary>
     public abstract class JContainer : JToken, IList<JToken>
-#if !(NETFX_CORE || PORTABLE || PORTABLE40)
+#if !(NETFX_CORE || PORTABLE || PORTABLE40 || ASPNETCORE50)
         , ITypedList, IBindingList
 #elif PORTABLE
         , INotifyCollectionChanged
 #endif
         , IList
-#if !(NET20 || NET35 || NETFX_CORE || PORTABLE40 || PORTABLE)
+#if !(NET20 || NET35 || NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50)
         , INotifyCollectionChanged
 #endif
     {
-#if !(NETFX_CORE || PORTABLE40 || PORTABLE)
+#if !(NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50)
         internal ListChangedEventHandler _listChanged;
         internal AddingNewEventHandler _addingNew;
 
@@ -78,7 +78,7 @@ namespace Newtonsoft.Json.Linq
             remove { _addingNew -= value; }
         }
 #endif
-#if !(NET20 || NET35 || PORTABLE40)
+#if !(NET20 || NET35 || PORTABLE40 || ASPNETCORE50)
         internal NotifyCollectionChangedEventHandler _collectionChanged;
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Newtonsoft.Json.Linq
         protected abstract IList<JToken> ChildrenTokens { get; }
 
         private object _syncRoot;
-#if !(PORTABLE40)
+#if !(PORTABLE40 || ASPNETCORE50)
         private bool _busy;
 #endif
 
@@ -121,7 +121,7 @@ namespace Newtonsoft.Json.Linq
 
         internal void CheckReentrancy()
         {
-#if !(PORTABLE40)
+#if !(PORTABLE40 || ASPNETCORE50)
             if (_busy)
                 throw new InvalidOperationException("Cannot change {0} during a collection change event.".FormatWith(CultureInfo.InvariantCulture, GetType()));
 #endif
@@ -132,7 +132,7 @@ namespace Newtonsoft.Json.Linq
             return new List<JToken>();
         }
 
-#if !(NETFX_CORE || PORTABLE40 || PORTABLE)
+#if !(NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50)
         /// <summary>
         /// Raises the <see cref="AddingNew"/> event.
         /// </summary>
@@ -166,7 +166,7 @@ namespace Newtonsoft.Json.Linq
             }
         }
 #endif
-#if !(NET20 || NET35 || PORTABLE40)
+#if !(NET20 || NET35 || PORTABLE40 || ASPNETCORE50)
         /// <summary>
         /// Raises the <see cref="CollectionChanged"/> event.
         /// </summary>
@@ -359,11 +359,11 @@ namespace Newtonsoft.Json.Linq
 
             ChildrenTokens.Insert(index, item);
 
-#if !(NETFX_CORE || PORTABLE40 || PORTABLE)
+#if !(NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50)
             if (_listChanged != null)
                 OnListChanged(new ListChangedEventArgs(ListChangedType.ItemAdded, index));
 #endif
-#if !(NET20 || NET35 || PORTABLE40)
+#if !(NET20 || NET35 || PORTABLE40 || ASPNETCORE50)
             if (_collectionChanged != null)
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
 #endif
@@ -393,11 +393,11 @@ namespace Newtonsoft.Json.Linq
 
             ChildrenTokens.RemoveAt(index);
 
-#if !(NETFX_CORE || PORTABLE40 || PORTABLE)
+#if !(NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50)
             if (_listChanged != null)
                 OnListChanged(new ListChangedEventArgs(ListChangedType.ItemDeleted, index));
 #endif
-#if !(NET20 || NET35 || PORTABLE40)
+#if !(NET20 || NET35 || PORTABLE40 || ASPNETCORE50)
             if (_collectionChanged != null)
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, index));
 #endif
@@ -457,11 +457,11 @@ namespace Newtonsoft.Json.Linq
             existing.Previous = null;
             existing.Next = null;
 
-#if !(NETFX_CORE || PORTABLE || PORTABLE40)
+#if !(NETFX_CORE || PORTABLE || PORTABLE40 || ASPNETCORE50)
             if (_listChanged != null)
                 OnListChanged(new ListChangedEventArgs(ListChangedType.ItemChanged, index));
 #endif
-#if !(NET20 || NET35 || PORTABLE40)
+#if !(NET20 || NET35 || PORTABLE40 || ASPNETCORE50)
             if (_collectionChanged != null)
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, item, existing, index));
 #endif
@@ -480,11 +480,11 @@ namespace Newtonsoft.Json.Linq
 
             ChildrenTokens.Clear();
 
-#if !(NETFX_CORE || PORTABLE40 || PORTABLE)
+#if !(NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50)
             if (_listChanged != null)
                 OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
 #endif
-#if !(NET20 || NET35 || PORTABLE40)
+#if !(NET20 || NET35 || PORTABLE40 || ASPNETCORE50)
             if (_collectionChanged != null)
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 #endif
@@ -774,7 +774,7 @@ namespace Newtonsoft.Json.Linq
             return hashCode;
         }
 
-#if !(NETFX_CORE || PORTABLE40 || PORTABLE)
+#if !(NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50)
         string ITypedList.GetListName(PropertyDescriptor[] listAccessors)
         {
             return string.Empty;
@@ -943,7 +943,7 @@ namespace Newtonsoft.Json.Linq
         #endregion
 
         #region IBindingList Members
-#if !(NETFX_CORE || PORTABLE || PORTABLE40)
+#if !(NETFX_CORE || PORTABLE || PORTABLE40 || ASPNETCORE50)
         void IBindingList.AddIndex(PropertyDescriptor property)
         {
         }

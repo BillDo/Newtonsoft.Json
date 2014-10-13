@@ -181,7 +181,7 @@ namespace Newtonsoft.Json.Schema
             if (containerAttribute != null && !string.IsNullOrEmpty(containerAttribute.Description))
                 return containerAttribute.Description;
 
-#if !(NETFX_CORE || PORTABLE40 || PORTABLE)
+#if !(NETFX_CORE || PORTABLE40 || PORTABLE || ASPNETCORE50)
             DescriptionAttribute descriptionAttribute = ReflectionUtils.GetAttribute<DescriptionAttribute>(type);
             if (descriptionAttribute != null)
                 return descriptionAttribute.Description;
@@ -329,14 +329,14 @@ namespace Newtonsoft.Json.Schema
                             }
                         }
                         break;
-#if !(NETFX_CORE || PORTABLE || PORTABLE40)
+#if !(NETFX_CORE || PORTABLE || PORTABLE40 || ASPNETCORE50)
                     case JsonContractType.Serializable:
                         CurrentSchema.Type = AddNullType(JsonSchemaType.Object, valueRequired);
                         CurrentSchema.Id = GetTypeId(type, false);
                         GenerateISerializableContract(type, (JsonISerializableContract)contract);
                         break;
 #endif
-#if !(NET35 || NET20 || PORTABLE40)
+#if !(NET35 || NET20 || PORTABLE40 || ASPNETCORE50)
                     case JsonContractType.Dynamic:
 #endif
                     case JsonContractType.Linq:
@@ -388,7 +388,7 @@ namespace Newtonsoft.Json.Schema
                 CurrentSchema.AllowAdditionalProperties = false;
         }
 
-#if !(NETFX_CORE || PORTABLE || PORTABLE40)
+#if !(NETFX_CORE || PORTABLE || PORTABLE40 || ASPNETCORE50)
         private void GenerateISerializableContract(Type type, JsonISerializableContract contract)
         {
             CurrentSchema.AllowAdditionalProperties = true;
@@ -429,7 +429,7 @@ namespace Newtonsoft.Json.Schema
                 case PrimitiveTypeCode.Empty:
                 case PrimitiveTypeCode.Object:
                     return schemaType | JsonSchemaType.String;
-#if !(NETFX_CORE || PORTABLE)
+#if !(NETFX_CORE || PORTABLE || ASPNETCORE50)
                 case PrimitiveTypeCode.DBNull:
                     return schemaType | JsonSchemaType.Null;
 #endif
